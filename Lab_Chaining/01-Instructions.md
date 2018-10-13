@@ -72,13 +72,13 @@ Exécutez la commande suivante :
 func host start
 ```
 
-_En cas d'erreur, référez vous à la doc [01-CoreTools.md](..\01-CoreTools.md) qui vous aidera à configurer votre environnement._
+_En cas d'erreur, référez vous à la doc [01-CoreTools.md](../01-CoreTools.md) qui vous aidera à configurer votre environnement._
 
 Vous devriez avoir un résultat similaire à celui-ci : 
-![](..\assets\Chaining-01-Start.png)
+![](../assets/Chaining-01-Start.png)
 
 Rendez-vous sur l'url indiqué par les tools, vous devriez avoir le résultat suivant : 
-![](..\assets\Chaining-02-WebStart.png)
+![](../assets/Chaining-02-WebStart.png)
 
 Vous pouvez voir l'état de votre job en allant sur la requête de Status: 
-![](..\assets\Chaining-03-WebStatus.png)
+![](../assets/Chaining-03-WebStatus.png)
