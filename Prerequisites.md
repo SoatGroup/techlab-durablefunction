@@ -23,6 +23,9 @@ Si vous avez déja  installé une version antérieure à la v2.1.401, il vous fa
 - Azure Function tools : [https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions)
 - C# : [https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp)
 
+Pour installer les extensions vous pouvez utiliser les liens ou faire une recherche directement depuis VSCode.
+N'oubliez pas de redémarrer VSCode après l'installation.
+
 
 # Storage Emulator
 [https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator)
