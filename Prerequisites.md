@@ -4,6 +4,10 @@
 # .Net Core
 - .Net Core 2.1 : [https://www.microsoft.com/net/download/dotnet-core/2.1](https://www.microsoft.com/net/download/dotnet-core/2.1)
 
+Pour connaître les versions de .Net Core installées sur votre machine, utilisez la commande
+```powershell
+dotnet --version
+```
 
 Via chocolatey : 
 Installation de choco (vous devez ouvrir votre terminal en mode administrator):
