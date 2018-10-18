@@ -1,8 +1,8 @@
 # Azure Function Core Tools 
 
 ## Installer Azure Function Core Tools
-Depuis VSCode, lancer la commande **Azure Functions: Install or Update Azure Function Core Tools**
 
+Depuis VSCode, via l'invite de commandes (CTRL+SHIFT+P), lancer la commande **Azure Functions: Install or Update Azure Function Core Tools**
 ![](/assets/00-InstallCoreTools.png)
 
 
