@@ -22,26 +22,6 @@ func init --csx
 func extensions install -p Microsoft.Azure.WebJobs.Extensions.DurableTask -v 1.6.2 --csx
 ```
 
-## Création d'une Durable Function
-
-### Starter
-
-```bash
-func new --name <FunctionName_Starter> --template "Durable Functions HTTP starter" -csx
-```
-
-### Orchestrator
-
-```bash
-func new --name <FunctionName_Orchestrator> --template "Durable Functions orchestrator" --csx
-```
-
-### Activity
-
-```bash
-func new --name <FunctionName_Activity> --template "Durable Functions activity" --csx
-```
-
 ## Exécuter en local nos Functions
 
 ### Compte de stockage
@@ -66,6 +46,29 @@ Dans les autres cas, le plus simple est de créer un compte de stockage sur Azur
     "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=mystorageaccount;AccountKey=mykey"
   }
 }
+```
+
+## Rappel des Commandes
+Voici la liste des commandes qui seront utilisés dans les labs.
+
+### Création d'une Durable Function
+
+#### Starter
+
+```bash
+func new --name <FunctionName_Starter> --template "Durable Functions HTTP starter" -csx
+```
+
+#### Orchestrator
+
+```bash
+func new --name <FunctionName_Orchestrator> --template "Durable Functions orchestrator" --csx
+```
+
+#### Activity
+
+```bash
+func new --name <FunctionName_Activity> --template "Durable Functions activity" --csx
 ```
 
 ### Let's go 
