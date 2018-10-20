@@ -17,7 +17,7 @@ func new --name Chaining_Activity --template "Durable Functions activity" --csx
 
 ## Mise à jour de notre fonction Chaining_Starter
 
-On va mettre à jour notre code (**run.csx**), afin de spécifier le nom de notre orchestrateur, et supprimé les paramètres que nous avons besoin, nous aurons donc un code comme ci-dessous : 
+On va mettre à jour notre code (**run.csx**), afin de spécifier le nom de notre orchestrateur, et supprimer les paramètres dont nous n'avons pas besoin. Nous aurons donc un code comme ci-dessous :
 
 ```csharp
 #r "Microsoft.Azure.WebJobs.Extensions.DurableTask"
