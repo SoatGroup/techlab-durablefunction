@@ -20,9 +20,10 @@ func extensions install -p Microsoft.Azure.WebJobs.Extensions.DurableTask -v 1.6
 
 Fonctions nécessaires :
 
-- Starter -> **Chaining_Starter**
-- Orchestrator -> **Chaining_Orchestrator**
-- Activity -> **Chaining_Activity**
+- Starter -> **HttpAsync_Starter**
+- Orchestrator -> **HttpAsyn_Orchestrator**
+- Activity -> **HttpAsync_Activity**
+- Status -> **HttpAsync_Status**
 
 Utiliser les commandes suivantes :
 
@@ -30,6 +31,7 @@ Utiliser les commandes suivantes :
 func new --name HttpAsync_Starter --template "Durable Functions HTTP starter" --csx
 func new --name HttpAsync_Orchestrator --template "Durable Functions orchestrator" --csx
 func new --name HttpAsync_Activity --template "Durable Functions activity" --csx
+func new --name HttpAsync_Status --template "Durable Functions HTTP starter" --csx
 ```
 
 ## Configuration de Azure Storage Emulator
