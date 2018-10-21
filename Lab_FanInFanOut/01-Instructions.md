@@ -101,6 +101,21 @@ public static async Task<IEnumerable<string>> Run(string url)
 }
 ```
 
+Mettre à jour le fichier function.json pour changer le binding comme ci-dessous : 
+
+```json
+{
+  "bindings": [
+    {
+      "name": "url",
+      "type": "activityTrigger",
+      "direction": "in"
+    }
+  ],
+  "disabled": false
+}
+```
+
 ### FanInFanOut_ProcessData
 
 Cette activité a pour rôle de compter les occurences de chaque lettre dans un mot. 
