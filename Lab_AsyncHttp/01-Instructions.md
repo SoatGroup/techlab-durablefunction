@@ -30,6 +30,7 @@ Utiliser les commandes suivantes :
 func new --name HttpAsync_Starter --template "Durable Functions HTTP starter" --csx
 func new --name HttpAsync_Orchestrator --template "Durable Functions orchestrator" --csx
 func new --name HttpAsync_Activity --template "Durable Functions activity" --csx
+func new --name HttpAsync_Status --template "Durable Functions HTTP starter" --csx
 ```
 
 ## Configuration de Azure Storage Emulator
