@@ -20,18 +20,17 @@ func extensions install -p Microsoft.Azure.WebJobs.Extensions.DurableTask -v 1.6
 
 Fonctions nécessaires :
 
-- Starter -> **HttpAsync_Starter**
-- Orchestrator -> **HttpAsyn_Orchestrator**
-- Activity -> **HttpAsync_Activity**
-- Status -> **HttpAsync_Status**
+- Starter -> **HumanInteraction_Starter**
+- Request Orchestrator -> **HumanInteraction_RequestOrchestrator**
+- Approval Orchestrator -> **HumanInteraction_ApprovalOrchestrator**
+- Approval Starter -> **HumanInteraction_ApprovalStarter**
 
 Utiliser les commandes suivantes :
 
 ```bash
 func new --name HumanInteraction_Starter --template "Durable Functions HTTP starter" --csx
-func new --name HumanInteraction_Orchestrator --template "Durable Functions orchestrator" --csx
-func new --name HumanInteraction_Activity --template "Durable Functions activity" --csx
-func new --name HumanInteraction_Status --template "Durable Functions HTTP starter" --csx
+func new --name HumanInteraction_RequestOrchestrator --template "Durable Functions orchestrator" --csx
+func new --name HumanInteraction_ApprovalStarter --template "Durable Functions HTTP starter" --csx
 ```
 
 ## Configuration de Azure Storage Emulator
@@ -49,25 +48,19 @@ Mettez à jour le fichier local.settings.json avec le contenu suivant :
 ```
 
 ## Mise à jour de notre fonction HumanInteraction_Starter
-On va mettre à jour notre code (**run.csx**).
-Nous allons de spécifier le nom de notre activité et supprimer le paramètre dont nous n'avons plus besoin.
-Nous allons également définir une réponse contenant l'URL de statut du résultat.
-Nous aurons donc un code comme ci-dessous :
+
+On va mettre à jour notre code (**run.csx**), afin de spécifier le nom de notre orchestrateur, et supprimer les paramètres dont nous n'avons pas besoin. Nous aurons donc un code comme ci-dessous :
+
 
 ```csharp
 #r "Microsoft.Azure.WebJobs.Extensions.DurableTask"
-#r "Microsoft.Extensions.Logging"
-
-#r "Microsoft.Azure.WebJobs.Extensions.Http"
+#r "Newtonsoft.Json"
 
 using System.Net;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Mvc;
 
-private const string ORCHESTRATOR_FUNCTION_NAME = "HumanInteraction_Orchestrator";
-
-public static async Task<IActionResult> Run(
-    HttpRequest req,
+private const string ORCHESTRATOR_FUNCTION_NAME = "HumanInteraction_RequestOrchestrator";
+public static async Task<HttpResponseMessage> Run(
+    HttpRequestMessage req,
     DurableOrchestrationClient starter,
     ILogger log)
 {
@@ -79,29 +72,54 @@ public static async Task<IActionResult> Run(
 }
 ```
 
-Comme nous avons changé la définition de notre function, en enlevant un paramètre, nous allons maintenant dans le fichier **function.json** afin de modifier la route pour la remplacer par **orchestrators/humaninteraction**.
+Comme nous avons changé la définition de notre function, en enlevant un paramètre, nous allons maintenant dans le fichier **function.json** afin de modifier la route pour la remplacer par **orchestrators/request**
 
-
-## Mise à jour de notre fonction HumanInteraction_Orchestrator
+## Mise à jour de notre fonction HumanInteraction_RequestOrchestrator
 
 Cette fonction a pour rôle d'orchestrer nos différentes activités en attendant notamment une interaction humaine.
 La méthode **WaitForExternalEvent** permet à notre orchestrateur d'attendre un évenemnt externe que nous nommerons **ApprovalEvent**.
-Pour cela, modifions le code la fonction **HumanInteraction_Orchestrator**.
+Pour cela, modifions le code la fonction **HumanInteraction_RequestOrchestrator**.
 
 ```csharp
 #r "Microsoft.Azure.WebJobs.Extensions.DurableTask"
 
-public static async Task<List<string>> Run(DurableOrchestrationContext context)
+public static async Task<bool> Run(
+    DurableOrchestrationContext context,
+    ILogger log)
 {
-    await ctx.CallActivityAsync("RequestApproval");
-    using (var timeoutCts = new CancellationTokenSource())
-    {
-        bool approved = await ctx.WaitForExternalEvent<bool>("ApprovalEvent");
-        log.LogWarning("Request approved");
-        // ...More process
-    }
+    // ... Request Approval code
+    bool approved = await context.WaitForExternalEvent<bool>("ApprovalEvent");
+    log.LogWarning($"Request approval status is: {approved}");
+    // ...More process
+    return approved;
 }
 ```
+
+## Mise à jour de notre fonction HumanInteraction_ApprovalStarter
+
+Cette fonction a pour rôle de simuler le processus d'approbation d'une requête.
+La méthode **RaiseEventAsync** permet de déclencher l'évènement tant attendu pour une instance particulière.
+Pour cela, modifions le code la fonction **HumanInteraction_ApprovalStarter**.
+
+```csharp
+#r "Microsoft.Azure.WebJobs.Extensions.DurableTask"
+#r "Newtonsoft.Json"
+
+using System.Net;
+
+public static async Task<HttpResponseMessage> Run(
+    HttpRequestMessage req,
+    DurableOrchestrationClient starter,
+    string instanceId,
+    ILogger log)
+{
+    bool isApproved = true;
+    await starter.RaiseEventAsync(instanceId, "ApprovalEvent", isApproved);
+    return starter.CreateCheckStatusResponse(req, instanceId);
+}
+```
+
+Comme nous avons changé la définition de notre function, en modifiant un paramètre, nous allons maintenant dans le fichier **function.json** afin de modifier la route pour la remplacer par **orchestrators/approve/{instanceId}**
 
 ## Lancer votre application
 
@@ -110,6 +128,14 @@ Exécutez la commande suivante :
 ```bash
 func host start
 ```
+
+Ouvrez ensuite l'URL **http://localhost:7071/api/humaninteraction/request** dans votre navigateur.
+
+Vous pouvez vérifiez le statut **Running** de votre requête en ouvrant la requête de Status ou en regardant les logs.
+
+Ouvrez enfin l'URL **http://localhost:7071/api/humaninteraction/approve/9b1a7819013d4d4096cee9f855f97cbd**.
+
+En regardant les logs ou en rafraichissant la requête de Status vous devriez voir que le traitement à poursuivi.
 
 _En cas d'erreur, référez vous à la doc [01-CoreTools.md](../01-CoreTools.md) qui vous aidera à configurer votre environnement._
 
