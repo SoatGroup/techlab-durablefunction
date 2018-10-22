@@ -22,7 +22,6 @@ Fonctions nécessaires :
 
 - Starter -> **HumanInteraction_Starter**
 - Request Orchestrator -> **HumanInteraction_RequestOrchestrator**
-- Approval Orchestrator -> **HumanInteraction_ApprovalOrchestrator**
 - Approval Starter -> **HumanInteraction_ApprovalStarter**
 
 Utiliser les commandes suivantes :
