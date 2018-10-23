@@ -81,7 +81,7 @@ public static async Task<IActionResult> Run(
     string instanceId = await starter.StartNewAsync(ORCHESTRATOR_FUNCTION_NAME, null);
 
     // To inform the client where to check the status
-    string checkStatusLocation = string.Format("{0}://{1}/api/status/{2}", req.Scheme, req.Host, instanceId);
+    string checkStatusLocation = string.Format("{0}://{1}/status/{2}", req.Scheme, req.Host, instanceId);
     string message = $"Your request has been received. To get the status, go to: {checkStatusLocation}"; 
 
     // Create an Http Response with Status Accepted (202) to let the client know that the request has been accepted but not yet processed.
@@ -92,7 +92,7 @@ public static async Task<IActionResult> Run(
 }
 ```
 
-Comme nous avons changé la définition de notre function, en enlevant un paramètre, nous allons maintenant dans le fichier **function.json** afin de modifier la route pour la remplacer par **orchestrators/httpasync**
+Comme nous avons changé la définition de notre function, en enlevant un paramètre, nous allons maintenant dans le fichier **function.json** afin de modifier la route pour la remplacer par **httpasync**
 
 ## Mise à jour de notre fonction HttpAsync_Orchestrator
 
@@ -179,7 +179,7 @@ public static async Task<IActionResult> Run(
         {
             log.LogWarning($"The current status is {customStatus}");
             //The URL (location header) is prepared so the client know where to get the status later. 
-            string checkStatusLocation = string.Format("{0}://{1}/api/status/{2}", req.Scheme, req.Host, instanceId);
+            string checkStatusLocation = string.Format("{0}://{1}/status/{2}", req.Scheme, req.Host, instanceId);
             string message = $"Your request is being processed. The current status is {customStatus}. Check again later";
 
             // Create an Http Response with Status Accepted (202) to let the client know that the original request hasn't yet been fully processed. 
